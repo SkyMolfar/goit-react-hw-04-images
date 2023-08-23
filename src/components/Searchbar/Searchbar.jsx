@@ -1,54 +1,55 @@
-import React, { useState } from 'react';
+import { Component } from 'react';
 import css from './Searchbar.module.css';
 import SearchIcon from '@mui/icons-material/Search';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 
-function Searchbar({ onSubmit }) {
-  const [query, setQuery] = useState('');
-
-  const handleOnChange = e => {
-    setQuery(e.currentTarget.value.trim().toLowerCase());
+class Searchbar extends Component {
+  state = {
+    query: '',
   };
-
-  const handleSubmit = e => {
+  handleOnChange = e => {
+    this.setState({ query: e.currentTarget.value.trim().toLowerCase() });
+  };
+  onSubmit = e => {
     e.preventDefault();
 
-    if (query === '') {
+    if (this.state.query === '') {
       return toast.error('Please, enter a query and try again');
     }
-
-    onSubmit(query);
-    setQuery('');
+    this.props.onSubmit(this.state.query);
+    this.setState({ query: '' });
     e.target.reset();
   };
 
-  return (
-    <header className={css.Searchbar}>
-      <form className={css.SearchForm} onSubmit={handleSubmit}>
-        <input
-          onChange={handleOnChange}
-          className={css.SearchFormInput}
-          type="text"
-          autoComplete="off"
-          autoFocus
-          placeholder="Search images and photos"
-          name="search"
-        />
-        <button
-          type="submit"
-          className={css.SearchFormButton}
-          aria-label="Search"
-        >
-          <SearchIcon />
-        </button>
-      </form>
-    </header>
-  );
+  render() {
+    return (
+      <header className={css.Searchbar}>
+        <form className={css.SearchForm} onSubmit={this.onSubmit}>
+          <input
+            onChange={this.handleOnChange}
+            className={css.SearchFormInput}
+            type="text"
+            autoComplete="off"
+            autoFocus
+            placeholder="Search images and photos"
+            name="search"
+          />
+          <button
+            type="submit"
+            className={css.SearchFormButton}
+            aria-label="Search"
+          >
+            <SearchIcon />
+          </button>
+        </form>
+      </header>
+    );
+  }
 }
 
 Searchbar.propTypes = {
   onSubmit: PropTypes.func.isRequired,
 };
 
-export default Searchbar;
+export { Searchbar };

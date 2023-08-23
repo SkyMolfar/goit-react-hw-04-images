@@ -1,15 +1,19 @@
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 import css from './Modal.module.css';
+import PropTypes from 'prop-types';
 
-function Modal({ image, onCloseModal }) {
-  const { largeImageURL, tags } = image;
+export function Modal({ image, onCloseModal }) {
+  useEffect(() => {
+    const onEsc = e => {
+      if (e.code === 'Escape') {
+        onCloseModal();
+      }
+    };
 
-  const onEsc = e => {
-    if (e.code === 'Escape') {
-      onCloseModal();
-    }
-  };
+    window.addEventListener('keydown', onEsc);
+
+    return () => window.removeEventListener('keydown', onEsc);
+  }, [onCloseModal]);
 
   const onClose = e => {
     if (e.target === e.currentTarget) {
@@ -17,12 +21,7 @@ function Modal({ image, onCloseModal }) {
     }
   };
 
-  useEffect(() => {
-    window.addEventListener('keydown', onEsc);
-    return () => {
-      window.removeEventListener('keydown', onEsc);
-    };
-  }, []);
+  const { largeImageURL, tags } = image;
 
   return (
     <div className={css.Overlay} onClick={onClose}>
@@ -37,5 +36,3 @@ Modal.propTypes = {
   image: PropTypes.object.isRequired,
   onCloseModal: PropTypes.func.isRequired,
 };
-
-export default Modal;
