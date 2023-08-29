@@ -19,6 +19,7 @@ export function App() {
   const [query, setQuery] = useState('');
   const [page, setPage] = useState(1);
 
+  
   useEffect(() => {
     if (!query) {
       return;
