@@ -10,7 +10,6 @@ import { Loader } from './Loader/Loader';
 import { useEffect, useState } from 'react';
 
 export function App() {
-  const [, setHasError] = useState(null); // const [hasError, setHasError] = useState(null);
   const [IsLoading, setIsLoading] = useState(false);
   const [IsShowModal, setIsShowModal] = useState(false);
   const [showImage, setShowImage] = useState(null);
